@@ -12,6 +12,9 @@ public class AutoDoor : MonoBehaviour
     private Vector3 OriginalPosition;
     private Vector3 BlankVector = new Vector3(0, 0, 0);
     private bool FullyOpened;
+    private bool opened;
+    private bool closed;
+    private int objectsInRange = 0;
 
     public GameObject Door;
 
@@ -32,6 +35,8 @@ public class AutoDoor : MonoBehaviour
                     {
                         Opening = false;
                         FullyOpened = true;
+                        opened = true;
+                        closed = false;
                     }
                     else
                     {
@@ -70,6 +75,8 @@ public class AutoDoor : MonoBehaviour
                     if (OriginalPosition.z >= Moved.z)
                     {
                         Closing = false;
+                        opened = false;
+                        closed = true;
                     }
                     else
                     {
@@ -95,14 +102,30 @@ public class AutoDoor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Opening = true;
+        objectsInRange = objectsInRange + 1;
+        if(opened == true)
+        {
+
+        }
+        else
+        {
+            
+            Opening = true;
         Moved = BlankVector;
         FullyOpened = false;
+        }
+        
        // this.gameObject.transform.Translate(DoorMove, Space.World);
     }
     private void OnTriggerExit(Collider other)
     {
+        objectsInRange = objectsInRange - 1;
+        if(objectsInRange == 0)
+        {
         Closing = true;
+
+        }
+
         
     }
 }
